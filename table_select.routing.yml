@@ -1,0 +1,9 @@
+
+table_select.tableform:
+  path: '/table_select/form/tableform'
+  defaults:
+    _form: '\Drupal\table_select\Form\tableform'
+    _title: 'tableform'
+  requirements:
+    _access: 'TRUE'
+  
