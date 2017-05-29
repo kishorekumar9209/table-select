@@ -25,7 +25,9 @@ class tableform extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $query = \Drupal::database()->select('users_field_data', 'u');
     $query->fields('u', ['uid', 'name', 'mail']);
-    $results = $query->execute()->fetchAll();
+    // Limit the rows to 20 for each page.
+    $pager = $query->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit(10);
+    $results = $pager->execute()->fetchAll();
     $header = [
       'userid' => t('User id'),
       'Username' => t('username'),
@@ -49,6 +51,10 @@ class tableform extends FormBase {
       '#options' => $output,
       '#empty' => t('No users found'),
     ];
+    // Finally add the pager.
+    $form['pager'] = array(
+      '#type' => 'pager'
+    );
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => t('Submit'),
